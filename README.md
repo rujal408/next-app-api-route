@@ -12,6 +12,7 @@ npm install next-app-api-route
 
 ## Example Usage
 
+```javascript
 import ApiRoute from "next-app-api-route";
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -50,3 +51,4 @@ export const GET = router.use(middlewarefun, getData);
 
 // Apply the POST handler (no middleware applied here)
 export const POST = router.use(postData);
+```
