@@ -1,6 +1,6 @@
 # `next-app-api-route` Usage Guide
 
-This package provides a simple way to define API routes with authentication and middleware support in a Next.js application. The code below demonstrates how to create middleware and handle GET and POST requests.
+This package provides a simple way to define API routes with authentication and middleware support in a Next.js application. The code below demonstrates how to create middleware and handle HTTP requests.
 
 ## Installation
 
