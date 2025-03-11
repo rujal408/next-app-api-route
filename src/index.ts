@@ -53,7 +53,7 @@ class ApiRoute {
        */
       const execute = async (
         index: number,
-        prev?: TCache
+        cach?: TCache
       ): Promise<NextResponse> => {
         if (index >= funcs.length) {
           return NextResponse.json(
@@ -63,7 +63,7 @@ class ApiRoute {
         }
 
         const currentFunc = funcs[index];
-        return currentFunc(req, res, () => execute(index + 1), prev);
+        return currentFunc(req, res, () => execute(index + 1), cach);
       };
 
       return execute(0, {
