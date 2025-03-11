@@ -1,16 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-export type NextMiddleware = () => Promise<NextResponse>;
+export type NextMiddleware = (data?: any) => Promise<NextResponse>;
 
 type Middleware = (
   req: NextRequest,
   res: NextResponse,
-  next: NextMiddleware
+  next: NextMiddleware,
+  data?: any
 ) => Promise<NextResponse>;
 
 class ApiRoute {
   use(...funcs: Middleware[]) {
     return async (req: NextRequest, res: NextResponse) => {
-      const execute = async (index: number): Promise<NextResponse> => {
+      const execute = async (
+        index: number,
+        prev?: any
+      ): Promise<NextResponse> => {
         if (index >= funcs.length) {
           return NextResponse.json(
             { error: "No handler found" },
@@ -19,7 +23,12 @@ class ApiRoute {
         }
 
         const currentFunc = funcs[index];
-        return currentFunc(req, res, () => execute(index + 1));
+        return currentFunc(
+          req,
+          res,
+          (params) => execute(index + 1, params),
+          prev
+        );
       };
 
       return execute(0);
