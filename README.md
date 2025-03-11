@@ -1,4 +1,4 @@
-# `next-app-api-route` Usage Guide
+# `Usage Guide`
 
 This package provides a simple way to define API routes with authentication and middleware support in a Next.js application. The code below demonstrates how to create middleware and handle HTTP requests.
 
@@ -13,7 +13,7 @@ npm install next-app-api-route
 ## Example Usage
 
 ```javascript
-import ApiRoute from "next-app-api-route";
+import ApiRoute, { NextMiddleware } from "next-app-api-route";
 import { NextRequest, NextResponse } from 'next/server';
 
 const router = new ApiRoute()
@@ -33,12 +33,13 @@ return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
 // If authenticated, proceed to the next handler
-return next();
+return next("pass to next");
 }
 
 // Handler for GET requests
-const getData = (req: NextRequest, res: NextResponse) => {
-return NextResponse.json({ message: "Success" });
+const getData = (req: NextRequest, res: NextResponse, next:NextMiddleware, args:any) => {
+    console.log(args) // "pass to next"
+    return NextResponse.json({ message: "Success" });
 }
 
 // Handler for POST requests
