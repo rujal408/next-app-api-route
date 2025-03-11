@@ -8,7 +8,6 @@ type Middleware = (
 ) => Promise<NextResponse>;
 
 class ApiRoute {
-  //  RECURSIVE TECHNIQUE IS BEING USED
   use(...funcs: Middleware[]) {
     return async (req: NextRequest, res: NextResponse) => {
       const execute = async (index: number): Promise<NextResponse> => {
