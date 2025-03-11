@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 /**
  * Type definition for the next middleware function in the chain
- * @param data - Optional data to pass to the next middleware
  * @returns Promise resolving to a NextResponse
  */
-export type NextMiddleware = (data?: any) => Promise<NextResponse>;
+export type NextMiddleware = () => Promise<NextResponse>;
+
+export type TCache = {
+  setValue: (key: string, value: any) => void;
+  getValue: (key: string) => any;
+};
 
 /**
  * Request function type definition
@@ -19,14 +23,27 @@ type RequestChain = (
   req: NextRequest,
   res: NextResponse,
   next: NextMiddleware,
-  data?: any
+  cache?: TCache
 ) => Promise<NextResponse>;
 
 /**
  * ApiRoute class for creating request chains with data passing capabilities
  */
 class ApiRoute {
-  use(...funcs: RequestChain[]) {
+  private cache: Map<string, any>;
+  constructor() {
+    this.cache = new Map();
+  }
+
+  private setValue(key: string, value: any) {
+    this.cache.set(key, value);
+  }
+
+  public getValue(key: string) {
+    return this.cache.get(key);
+  }
+
+  public use(...funcs: RequestChain[]) {
     return async (req: NextRequest, res: NextResponse) => {
       /**
        * Recursive middleware executor
@@ -36,7 +53,7 @@ class ApiRoute {
        */
       const execute = async (
         index: number,
-        prev?: any
+        prev?: TCache
       ): Promise<NextResponse> => {
         if (index >= funcs.length) {
           return NextResponse.json(
@@ -46,15 +63,13 @@ class ApiRoute {
         }
 
         const currentFunc = funcs[index];
-        return currentFunc(
-          req,
-          res,
-          (params) => execute(index + 1, params),
-          prev
-        );
+        return currentFunc(req, res, () => execute(index + 1), prev);
       };
 
-      return execute(0);
+      return execute(0, {
+        setValue: this.setValue,
+        getValue: this.getValue,
+      });
     };
   }
 }
