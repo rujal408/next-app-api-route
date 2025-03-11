@@ -14,38 +14,43 @@ npm install next-app-api-route
 
 ```javascript
 import ApiRoute, { NextMiddleware } from "next-app-api-route";
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
-const router = new ApiRoute()
+const router = new ApiRoute();
 
 // Middleware function to check authentication
 async function middlewarefun(
-req: NextRequest,
-\_: NextResponse,
-next: () => Promise<NextResponse>
+  req: NextRequest,
+  _: NextResponse,
+  next: (data?: any) => Promise<NextResponse>
 ) {
-// Check if the request is authenticated (replace with actual authentication logic)
-const authenticated = false; // For demo purposes, authentication is false
+  // Check if the request is authenticated (replace with actual authentication logic)
+  const authenticated = false; // For demo purposes, authentication is false
 
-if (!authenticated) {
-// If not authenticated, return a 401 Unauthorized response
-return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-}
+  if (!authenticated) {
+    // If not authenticated, return a 401 Unauthorized response
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-// If authenticated, proceed to the next handler
-return next("pass to next");
+  // If authenticated, proceed to the next handler
+  return next("pass to next");
 }
 
 // Handler for GET requests
-const getData = (req: NextRequest, res: NextResponse, next:NextMiddleware, args:any) => {
-    console.log(args) // "pass to next"
-    return NextResponse.json({ message: "Success" });
-}
+const getData = (
+  req: NextRequest,
+  res: NextResponse,
+  next: NextMiddleware,
+  args: any
+) => {
+  console.log(args); // "pass to next"
+  return NextResponse.json({ message: "Success" });
+};
 
 // Handler for POST requests
 const postData = (req: NextRequest, res: NextResponse) => {
-return NextResponse.json({ message: "Data created successfully" });
-}
+  return NextResponse.json({ message: "Data created successfully" });
+};
 
 // Apply middleware to the GET route, followed by the handler function
 export const GET = router.use(middlewarefun, getData);
