@@ -21,7 +21,6 @@ const router = new ApiRoute();
 // Middleware function to check authentication
 async function middlewarefun(
   req: NextRequest,
-  res: NextResponse,
   next: NextMiddleware,
   cache?: TCache
 ) {
@@ -40,12 +39,7 @@ async function middlewarefun(
 }
 
 // Handler for GET requests
-const getData = (
-  req: NextRequest,
-  res: NextResponse,
-  next: NextMiddleware,
-  cache?: TCache
-) => {
+const getData = (req: NextRequest, next: NextMiddleware, cache?: TCache) => {
   console.log(cache.getData("data")); // "{id:1}"
   return NextResponse.json({ message: "Success" });
 };
