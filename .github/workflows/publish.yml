@@ -19,9 +19,6 @@ jobs:
       - name: Build Package
         run: npm run build
 
-      - name: Authenticate to GitHub npm registry
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
       - name: Publish to npm
         run: npm publish
         env:
