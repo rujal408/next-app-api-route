@@ -22,7 +22,7 @@ const router = new ApiRoute();
 async function middlewarefun(
   req: NextRequest,
   next: NextMiddleware,
-  cache?: TCache
+  cache: TCache
 ) {
   // Check if the request is authenticated (replace with actual authentication logic)
   const authenticated = false; // For demo purposes, authentication is false
