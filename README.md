@@ -13,7 +13,7 @@ npm install next-app-api-route
 ## Example Usage
 
 ```javascript
-import ApiRoute, { NextMiddleware } from "next-app-api-route";
+import ApiRoute, { NextMiddleware, TCache } from "next-app-api-route";
 import { NextRequest, NextResponse } from "next/server";
 
 const router = new ApiRoute();
@@ -21,8 +21,9 @@ const router = new ApiRoute();
 // Middleware function to check authentication
 async function middlewarefun(
   req: NextRequest,
-  _: NextResponse,
-  next: (data?: any) => Promise<NextResponse>
+  res: NextResponse,
+  next: NextMiddleware,
+  cache?: TCache
 ) {
   // Check if the request is authenticated (replace with actual authentication logic)
   const authenticated = false; // For demo purposes, authentication is false
@@ -31,6 +32,8 @@ async function middlewarefun(
     // If not authenticated, return a 401 Unauthorized response
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  cache.setData("data", { id: 1 });
 
   // If authenticated, proceed to the next handler
   return next("pass to next");
@@ -41,9 +44,9 @@ const getData = (
   req: NextRequest,
   res: NextResponse,
   next: NextMiddleware,
-  args: any
+  cache?: TCache
 ) => {
-  console.log(args); // "pass to next"
+  cache.getData("data"); // "{id:1}"
   return NextResponse.json({ message: "Success" });
 };
 
