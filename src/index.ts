@@ -16,7 +16,7 @@ export type TCache = {
  * @param req - Next.js request object
  * @param res - Next.js response object
  * @param next - Function to call the next middleware in the chain
- * @param data - Optional data received from previous middleware
+ * @param cach - set and get cache
  * @returns Promise resolving to a NextResponse
  */
 type RequestChain = (
