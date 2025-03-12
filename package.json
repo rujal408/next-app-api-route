@@ -8,7 +8,7 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "rollup": "rollup -c --bundleConfigAsCjs",
+    "build": "npm run clean && rollup -c --bundleConfigAsCjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
