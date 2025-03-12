@@ -27,6 +27,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "next api",
+    "api wrapper",
+    "middleware",
+    "api route",
+    "nextjs"
+  ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.0",
