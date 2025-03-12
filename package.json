@@ -19,6 +19,7 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "homepage": "https://github.com/rujal408/next-app-api-route",
   "repository": {
     "type": "git",
     "url": "https://github.com/rujal408/next-app-api-route"
