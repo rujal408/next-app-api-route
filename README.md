@@ -46,7 +46,7 @@ const getData = (
   next: NextMiddleware,
   cache?: TCache
 ) => {
-  cache.getData("data"); // "{id:1}"
+  console.log(cache.getData("data")); // "{id:1}"
   return NextResponse.json({ message: "Success" });
 };
 
