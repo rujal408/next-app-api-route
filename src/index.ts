@@ -20,6 +20,7 @@ export type TCache = {
  */
 export type RequestChain = (
   req: NextRequest,
+  res: NextResponse,
   next: NextMiddleware,
   cache: TCache
 ) => Promise<NextResponse<unknown>>;
@@ -55,6 +56,8 @@ class ApiRoute {
         getValue: this.getValue,
       };
 
+      const response = new NextResponse();
+
       const execute = async (
         index: number,
         cach: TCache
@@ -67,7 +70,12 @@ class ApiRoute {
         }
 
         const currentFunc = funcs[index];
-        return currentFunc(req, () => execute(index + 1, cach), cache);
+        return currentFunc(
+          req,
+          response,
+          () => execute(index + 1, cach),
+          cache
+        );
       };
 
       return execute(0, cache);

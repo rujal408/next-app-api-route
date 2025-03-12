@@ -9,6 +9,7 @@ describe("ApiRoute", () => {
       const router = new ApiRoute();
       const postData = async (
         _: NextRequest,
+        ____: NextResponse,
         __: NextMiddleware,
         ___: TCache
       ) => {
@@ -38,7 +39,11 @@ describe("ApiRoute", () => {
     it("it should move from one function to another function when next is called", async () => {
       const router = new ApiRoute();
 
-      const middleware = (_: NextRequest, next: NextMiddleware) => {
+      const middleware = (
+        _: NextRequest,
+        ____: NextResponse,
+        next: NextMiddleware
+      ) => {
         return next();
       };
 
@@ -56,7 +61,11 @@ describe("ApiRoute", () => {
     it("it should not move from one function to another function when not authenticated or check for error response status", async () => {
       const router = new ApiRoute();
 
-      const middleware = async (_: NextRequest, next: NextMiddleware) => {
+      const middleware = async (
+        _: NextRequest,
+        ___: NextResponse,
+        next: NextMiddleware
+      ) => {
         const authenticated = false;
         if (authenticated) {
           return next();
