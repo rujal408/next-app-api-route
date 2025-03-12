@@ -18,7 +18,7 @@ export type TCache = {
  * @param cach - set and get cache
  * @returns Promise resolving to a NextResponse
  */
-type RequestChain = (
+export type RequestChain = (
   req: NextRequest,
   next: NextMiddleware,
   cache: TCache
@@ -49,6 +49,12 @@ class ApiRoute {
        * @param previousData - Data passed from previous middleware
        * @returns Promise resolving to a NextResponse
        */
+
+      const cache = {
+        setValue: this.setValue,
+        getValue: this.getValue,
+      };
+
       const execute = async (
         index: number,
         cach: TCache
@@ -61,13 +67,10 @@ class ApiRoute {
         }
 
         const currentFunc = funcs[index];
-        return currentFunc(req, () => execute(index + 1, cach), cach);
+        return currentFunc(req, () => execute(index + 1, cach), cache);
       };
 
-      return execute(0, {
-        setValue: this.setValue,
-        getValue: this.getValue,
-      });
+      return execute(0, cache);
     };
   }
 }
