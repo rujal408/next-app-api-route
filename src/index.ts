@@ -32,6 +32,8 @@ class ApiRoute {
   private cache: Map<string, any>;
   constructor() {
     this.cache = new Map();
+    this.setValue = this.setValue.bind(this);
+    this.getValue = this.getValue.bind(this);
   }
 
   private setValue(key: string, value: any) {
@@ -43,6 +45,10 @@ class ApiRoute {
   }
 
   public use(...funcs: RequestChain[]) {
+    const cache = {
+      setValue: this.setValue,
+      getValue: this.getValue,
+    };
     return async (req: NextRequest) => {
       /**
        * Recursive middleware executor
@@ -50,11 +56,6 @@ class ApiRoute {
        * @param previousData - Data passed from previous middleware
        * @returns Promise resolving to a NextResponse
        */
-
-      const cache = {
-        setValue: this.setValue,
-        getValue: this.getValue,
-      };
 
       const response = new NextResponse();
 

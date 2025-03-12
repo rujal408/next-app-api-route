@@ -88,4 +88,31 @@ describe("ApiRoute", () => {
       expect(body).toEqual({ message: "Not Authenticated!!" });
     });
   });
+  it("Set value from one middleware and get that value in another middleware", async () => {
+    const router = new ApiRoute();
+
+    const middleware = async (
+      _: NextRequest,
+      ___: NextResponse,
+      next: NextMiddleware,
+      cache: TCache
+    ) => {
+      cache.setValue("test_one", { id: "test_one" });
+      return next();
+    };
+    const getData = async (
+      _: NextRequest,
+      __: NextResponse,
+      ___: NextMiddleware,
+      cache: TCache
+    ) => {
+      const val = cache.getValue("test_one");
+      return NextResponse.json(val);
+    };
+    const GET = router.use(middleware, getData);
+    const response = await GET(mockReq);
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body).toEqual({ id: "test_one" });
+  });
 });
