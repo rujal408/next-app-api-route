@@ -50,15 +50,13 @@ class ApiRoute {
       getValue: this.getValue,
     };
     return async (req: NextRequest) => {
+      const response = new NextResponse();
       /**
        * Recursive middleware executor
        * @param index - Current middleware index
        * @param previousData - Data passed from previous middleware
        * @returns Promise resolving to a NextResponse
        */
-
-      const response = new NextResponse();
-
       const execute = async (
         index: number,
         cach: TCache

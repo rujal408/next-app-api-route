@@ -9,9 +9,9 @@ describe("ApiRoute", () => {
       const router = new ApiRoute();
       const postData = async (
         _: NextRequest,
-        ____: NextResponse,
-        __: NextMiddleware,
-        ___: TCache
+        __: NextResponse,
+        ___: NextMiddleware,
+        ____: TCache
       ) => {
         return NextResponse.json({ message: "Data created successfully" });
       };
