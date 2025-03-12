@@ -53,7 +53,7 @@ describe("ApiRoute", () => {
       expect(body).toEqual({ message: "Got It!!" });
     });
 
-    it("it should not move from one function to another function when not authenticated", async () => {
+    it("it should not move from one function to another function when not authenticated or check for error response status", async () => {
       const router = new ApiRoute();
 
       const middleware = async (_: NextRequest, next: NextMiddleware) => {
@@ -62,7 +62,10 @@ describe("ApiRoute", () => {
           return next();
         }
 
-        return NextResponse.json({ message: "Not Authenticated!!" });
+        return NextResponse.json(
+          { message: "Not Authenticated!!" },
+          { status: 401 }
+        );
       };
 
       const getData = async () => {
@@ -71,7 +74,7 @@ describe("ApiRoute", () => {
 
       const GET = router.use(middleware, getData);
       const response = await GET(mockReq);
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(401);
       const body = await response.json();
       expect(body).toEqual({ message: "Not Authenticated!!" });
     });
