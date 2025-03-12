@@ -36,7 +36,7 @@ async function middlewarefun(
   cache.setData("data", { id: 1 });
 
   // If authenticated, proceed to the next handler
-  return next("pass to next");
+  return next();
 }
 
 // Handler for GET requests
