@@ -34,5 +34,46 @@ describe("ApiRoute", () => {
       const body = await response.json();
       expect(body).toEqual({ message: "Successful" });
     });
+
+    it("it should move from one function to another function when next is called", async () => {
+      const router = new ApiRoute();
+
+      const middleware = (_: NextRequest, next: NextMiddleware) => {
+        return next();
+      };
+
+      const getData = async () => {
+        return NextResponse.json({ message: "Got It!!" });
+      };
+
+      const GET = router.use(middleware, getData);
+      const response = await GET(mockReq);
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body).toEqual({ message: "Got It!!" });
+    });
+
+    it("it should not move from one function to another function when not authenticated", async () => {
+      const router = new ApiRoute();
+
+      const middleware = async (_: NextRequest, next: NextMiddleware) => {
+        const authenticated = false;
+        if (authenticated) {
+          return next();
+        }
+
+        return NextResponse.json({ message: "Not Authenticated!!" });
+      };
+
+      const getData = async () => {
+        return NextResponse.json({ message: "Got It!!" });
+      };
+
+      const GET = router.use(middleware, getData);
+      const response = await GET(mockReq);
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body).toEqual({ message: "Not Authenticated!!" });
+    });
   });
 });
