@@ -1,6 +1,6 @@
 {
   "name": "next-app-api-route",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "author": "Rujal",
   "license": "MIT",
   "main": "dist/index.js",
