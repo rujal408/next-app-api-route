@@ -18,7 +18,7 @@ export type TCache = {
  * @param cach - set and get cache
  * @returns Promise resolving to a NextResponse
  */
-export type RequestChain = (
+export type NextChain = (
   req: NextRequest,
   res: NextResponse,
   next: NextMiddleware,
@@ -44,7 +44,7 @@ class ApiRoute {
     return this.cache.get(key);
   }
 
-  public use(...funcs: RequestChain[]) {
+  public use(...funcs: NextChain[]) {
     const cache = {
       setValue: this.setValue,
       getValue: this.getValue,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import ApiRoute, { NextMiddleware, TCache } from "./src/index";
+import ApiRoute, { NextChain } from "./src/index";
 
 const mockReq = {} as NextRequest;
 
@@ -7,12 +7,7 @@ describe("ApiRoute", () => {
   describe("use", () => {
     it("should return the response from the middleware", async () => {
       const router = new ApiRoute();
-      const postData = async (
-        _: NextRequest,
-        __: NextResponse,
-        ___: NextMiddleware,
-        ____: TCache
-      ) => {
+      const postData: NextChain = async (_, __, ___, ____) => {
         return NextResponse.json({ message: "Data created successfully" });
       };
       const POST = router.use(postData);
@@ -39,11 +34,7 @@ describe("ApiRoute", () => {
     it("it should move from one function to another function when next is called", async () => {
       const router = new ApiRoute();
 
-      const middleware = (
-        _: NextRequest,
-        ____: NextResponse,
-        next: NextMiddleware
-      ) => {
+      const middleware: NextChain = (_, ____, next) => {
         return next();
       };
 
@@ -61,11 +52,7 @@ describe("ApiRoute", () => {
     it("it should not move from one function to another function when not authenticated or check for error response status", async () => {
       const router = new ApiRoute();
 
-      const middleware = async (
-        _: NextRequest,
-        ___: NextResponse,
-        next: NextMiddleware
-      ) => {
+      const middleware: NextChain = async (_, ___, next) => {
         const authenticated = false;
         if (authenticated) {
           return next();
@@ -91,21 +78,11 @@ describe("ApiRoute", () => {
   it("Set value from one middleware and get that value in another middleware", async () => {
     const router = new ApiRoute();
 
-    const middleware = async (
-      _: NextRequest,
-      ___: NextResponse,
-      next: NextMiddleware,
-      cache: TCache
-    ) => {
+    const middleware: NextChain = async (_, ___, next, cache) => {
       cache.setValue("test_one", { id: "test_one" });
       return next();
     };
-    const getData = async (
-      _: NextRequest,
-      __: NextResponse,
-      ___: NextMiddleware,
-      cache: TCache
-    ) => {
+    const getData: NextChain = async (_, __, ___, cache) => {
       const val = cache.getValue("test_one");
       return NextResponse.json(val);
     };
