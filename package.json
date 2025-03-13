@@ -25,7 +25,7 @@
     "url": "https://github.com/rujal408/next-app-api-route"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "access": "public"
   },
   "keywords": [
     "next api",
