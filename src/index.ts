@@ -57,10 +57,7 @@ class ApiRoute {
        * @param previousData - Data passed from previous middleware
        * @returns Promise resolving to a NextResponse
        */
-      const execute = async (
-        index: number,
-        cach: TCache
-      ): Promise<NextResponse> => {
+      const execute = async (index: number): Promise<NextResponse> => {
         if (index >= funcs.length) {
           return NextResponse.json(
             { error: "No handler found" },
@@ -69,15 +66,10 @@ class ApiRoute {
         }
 
         const currentFunc = funcs[index];
-        return currentFunc(
-          req,
-          response,
-          () => execute(index + 1, cach),
-          cache
-        );
+        return currentFunc(req, response, () => execute(index + 1), cache);
       };
 
-      return execute(0, cache);
+      return execute(0);
     };
   }
 }
