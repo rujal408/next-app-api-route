@@ -8,17 +8,15 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set Up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
         with:
-          node-version: "lts/*"
-          registry-url: "https://npm.pkg.github.com"
+          fetch-depth: 0
 
-      - name: Authenticate with GitHub Packages
-        run: echo "registry=https://npm.pkg.github.com/" > ~/.npmrc && echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install Dependencies
         run: npm install
@@ -29,7 +27,7 @@ jobs:
       - name: Build Package
         run: npm run build
 
-      - name: Publish to GitHub Packages
-        run: npm publish --registry=https://npm.pkg.github.com
+      - name: Publish to npm
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
