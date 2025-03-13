@@ -20,7 +20,7 @@ export type TCache = {
  */
 export type NextChain = (
   req: NextRequest,
-  res: NextResponse,
+  res: any,
   next: NextMiddleware,
   cache: TCache
 ) => Promise<NextResponse<unknown>>;
@@ -49,8 +49,7 @@ class ApiRoute {
       setValue: this.setValue,
       getValue: this.getValue,
     };
-    return async (req: NextRequest) => {
-      const response = new NextResponse();
+    return async (req: NextRequest, params?: any) => {
       /**
        * Recursive middleware executor
        * @param index - Current middleware index
@@ -66,7 +65,12 @@ class ApiRoute {
         }
 
         const currentFunc = funcs[index];
-        return currentFunc(req, response, () => execute(index + 1), cache);
+        return currentFunc(
+          req,
+          params ? params : {},
+          () => execute(index + 1),
+          cache
+        );
       };
 
       return execute(0);

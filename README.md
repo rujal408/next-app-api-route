@@ -19,7 +19,7 @@ import { NextRequest, NextResponse } from "next/server";
 const router = new ApiRoute();
 
 // Middleware function to check authentication
-const middlewarefun: NextChain = async (req, res, next, cache) => {
+const middlewarefun: NextChain = async (req, params, next, cache) => {
   // Check if the request is authenticated (replace with actual authentication logic)
   const authenticated = false; // For demo purposes, authentication is false
 
@@ -35,7 +35,7 @@ const middlewarefun: NextChain = async (req, res, next, cache) => {
 };
 
 // Handler for GET requests
-const getData: NextChain = async (req, res, next, cache) => {
+const getData: NextChain = async (req, params, next, cache) => {
   console.log(cache.getData("data")); // "{id:1}"
   return NextResponse.json({ message: "Success" });
 };
