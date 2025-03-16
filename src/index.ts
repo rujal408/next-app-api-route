@@ -88,5 +88,4 @@ class ApiRoute {
   }
 }
 
-const apiRoute = new ApiRoute();
-export default apiRoute;
+export default ApiRoute;
