@@ -32,31 +32,23 @@ export type NextChain = (
  * ApiRoute class for creating request chains with data passing capabilities
  */
 class ApiRoute {
-  private cache: Map<string, any>;
-  constructor() {
-    this.cache = new Map();
-    this.setValue = this.setValue.bind(this);
-    this.getValue = this.getValue.bind(this);
-    this.removeValue = this.removeValue.bind(this);
-  }
-
-  private setValue(key: string, value: any) {
-    this.cache.set(key, value);
-  }
-
-  private getValue(key: string) {
-    return this.cache.get(key);
-  }
-
-  private removeValue(key: string) {
-    return this.cache.delete(key);
-  }
-
   public use(...funcs: NextChain[]) {
+    const cach = new Map();
+
+    function setValue(key: string, value: any) {
+      cach.set(key, value);
+    }
+    function getValue(key: string) {
+      return cach.get(key);
+    }
+
+    function removeValue(key: string) {
+      return cach.delete(key);
+    }
     const cache = {
-      setValue: this.setValue,
-      getValue: this.getValue,
-      removeValue: this.removeValue,
+      setValue: setValue,
+      getValue: getValue,
+      removeValue: removeValue,
     };
     return async (req: NextRequest, params?: any) => {
       /**
